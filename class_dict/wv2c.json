@@ -1,0 +1,8 @@
+{
+    "bicycle": 0,
+    "bird": 1,
+    "car": 2,
+    "cat": 3,
+    "dog": 4,
+    "person": 5
+}

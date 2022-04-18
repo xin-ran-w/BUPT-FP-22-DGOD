@@ -1,0 +1,56 @@
+from collections import OrderedDict
+import torch.nn as nn
+from torch.jit.annotations import Dict
+
+class IntermediateLayerGetter(nn.ModuleDict):
+    """
+    Module wrapper that returns intermediate layers from a model
+    It has a strong assumption that the modules have been registered
+    into the model in the same order as they are used.
+    This means that one should **not** reuse the same nn.Module
+    twice in the forward if you want this to work.
+    Additionally, it is only able to query submodules that are directly
+    assigned to the model. So if `model` is passed, `model.feature1` can
+    be returned, but not `model.feature1.layer2`.
+    Arguments:
+        model (nn.Module): model on which we will extract the features
+        return_layers (Dict[name, new_name]): a dict containing the names
+            of the modules for which the activations will be returned as
+            the key of the dict, and the value of the dict is the name
+            of the returned activation (which the user can specify).
+    """
+    __annotations__ = {
+        "return_layers": Dict[str, str],
+    }
+
+    def __init__(self, model, return_layers):
+        if not set(return_layers).issubset([name for name, _ in model.named_children()]):
+            print([name for name, _ in model.named_children()])
+            raise ValueError("return_layers are not present in model")
+
+        orig_return_layers = return_layers
+        return_layers = {str(k): str(v) for k, v in return_layers.items()}
+        layers = OrderedDict()
+
+        # 遍历模型子模块按顺序存入有序字典
+        # 只保存layer4及其之前的结构，舍去之后不用的结构
+        for name, module in model.named_children():
+            layers[name] = module
+            if name in return_layers:
+                del return_layers[name]
+            if not return_layers:
+                break
+
+        super(IntermediateLayerGetter, self).__init__(layers)
+        self.return_layers = orig_return_layers
+
+    def forward(self, x):
+        out = OrderedDict()
+        # 依次遍历模型的所有子模块，并进行正向传播，
+        # 收集layer1, layer2, layer3, layer4的输出
+        for name, module in self.items():
+            x = module(x)
+            if name in self.return_layers:
+                out_name = self.return_layers[name]
+                out[out_name] = x
+        return out
