@@ -12,17 +12,17 @@ This project compared three DG algorithms under the Object Detection task. They 
 
 ### 2. Benchmarks
 
-Using five datasets building two benchmarks: BCF, BCFKS. You have to download the five original datasets: **BDD100k**, **Cityscapes**, **Foggy Cityscapes**, **KITTI**, **SIM10k**, and preprocess them to PASCAL VOC format. Then filter the common categories according to the following two benchmarks.
+Using five datasets building two benchmarks: BCF, BCFKS. You have to download the five original datasets: **BDD100k**, **Cityscapes**, **Foggy Cityscapes**, **KITTI**, **SIM10k**, and preprocess them to PASCAL VOC format. Then filter the common categories according to the following two benchmarks. I will upload a script of pre-processing of datasets in another repo soon.
 
 #### 2.1. BCF
 
-Original Datasets: BDD100k, Cityscapes, Foggy Cityscapes
+Original Datasets: **BDD100k**, **Cityscapes**, **Foggy Cityscapes**
 
-common categories: **person, car, train, rider, truck, motor, bike, bus**
+common categories: **person**, **car**, **train**, **rider**, **truck**, **motor**, **bike**, **bus**
 
 #### 2.2. BCFKS
 
-Original Datasets: BDD100k, Cityscapes, Foggy Cityscapes, KITTI, SIM10k
+Original Datasets: **BDD100k**, **Cityscapes**, **Foggy Cityscapes**, **KITTI**, **SIM10k**
 
 common categories: **car**
 
@@ -42,23 +42,60 @@ common categories: **car**
 
 2. Install
 
-   ```
+   ```bash
+   # create conda env
+   conda create -n [env] python=3.7
+   conda activate [env]
+   
+   # install pytorch
+   conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 -c pytorch
+   
+   # install pycocotools
+   ## before install pycocotools, you should install cython
+   
+   pip install cython
+   
+   git clone https://github.com/cocodataset/cocoapi.git
+   cd cocoapi/PythonAPI
+   python setup.py build_ext install
+   
+   # install fiftyone, this package is used to visualize the dataset and predict results by different algorithms, to see more details in https://voxel51.com/
+   
+   pip install fiftyone
+   
+   ## if your ubuntu's version <= 18.04, install following package
+   pip install fiftyone-db-ubuntu1604
    
    ```
 
-### 4. Train
+### 4. Basic Configs
+
+The basic, train, valid parameters all listed in the params package.
+
+### 5. Train
 
 Use `train.py` to train on a single GPU, or `train_multi_GPU.py` to train on multiple GPUs. 
 
-In the following commands, the `CUDA_VISIBLE_DEVICES=gpu_id` choose which gpu/gpus to be used. 
+In the following commands: 
+
+`CUDA_VISIBLE_DEVICES=gpu_id` choose which gpu/gpus to be used. 
 
 `--algorithm` choose the algorithm, total three choices: `CGMDRL`, `Baseline`, `AlignSource`, `Stitch`. 
 
 `--num-classes` is 1 if you choose the BCFKS benchmark, 8 if you choose BCF benchmark.
 
+`--amp` indicate whether use mixed precision training in PyTorch.
 
+`--ni` indicate which network to use: 0 for Faster R-CNN, 1 for RetinaNet. 
+
+`--cfi` indicate the class dict
+
+`--sdi` indicate the source domains in training
+
+`--tdi` indicate the target domains in training
 
 ```bash
+cd /path/to/workspace
 conda activate env
 
 # train on a single GPU
@@ -69,5 +106,5 @@ CUDA_VISIBLE_DEVICES=0 python train.py --num-classes 1 --amp True --batch-size 4
 CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch --nproc_per_node=2 --use_env train_multi_GPU.py --num-classes 1 --amp True --batch-size 4 --sdi 1 2 3 4 --tdi 0 --ni 0 --cfi 4 --algorithm CGMDRL
 ```
 
-### 5. Test
+### 6. Test
 
