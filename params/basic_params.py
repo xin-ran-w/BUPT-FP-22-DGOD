@@ -39,15 +39,11 @@ class BasicParams(object):
             "networks": [
                 'fasterrcnn',
                 'retinanet',
-                'yolov3',
-                'ssd'
             ],
 
             "weights": [
                 '/data/wangxinran/weight/fasterrcnn_resnet50_fpn_coco.pth',
                 '/data/wangxinran/weight/retinanet_resnet50_fpn_coco.pth',
-                '/data/wangxinran/weight/yolov3-spp-ultralytics-512.pt',
-                '/data/wangxinran/weight/nvidia_ssdpyt_fp32_190826.pt'
             ]
         }
 
