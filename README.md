@@ -66,6 +66,11 @@ common categories: **car**
    ## if your ubuntu's version <= 18.04, install following package
    pip install fiftyone-db-ubuntu1604
    
+   # Download pre-training weights and rename it according to the basic configs
+   ## Faster R-CNN
+   wget https://download.pytorch.org/models/fasterrcnn_resnet50_fpn_coco-258fb6c6.pth
+   ## RetinaNet
+   wget https://download.pytorch.org/models/retinanet_resnet50_fpn_coco-eeacb38b.pth
    ```
 
 ### 4. Basic Configs
@@ -97,8 +102,8 @@ self.net_info = {
     ],
 
     "weights": [
-        '/data/wangxinran/weight/fasterrcnn_resnet50_fpn_coco.pth',
-        '/data/wangxinran/weight/retinanet_resnet50_fpn_coco.pth',
+        '/path/to/fasterrcnn_resnet50_fpn_coco.pth',
+        '/path/to/retinanet_resnet50_fpn_coco.pth',
     ]
 }
 ```
@@ -127,10 +132,9 @@ In the following commands:
 
 ```bash
 cd /path/to/workspace
-conda activate env
+conda activate [env]
 
 # train on a single GPU
-
 CUDA_VISIBLE_DEVICES=0 python train.py --num-classes 1 --amp True --batch-size 4 --sdi 1 2 3 4 --tdi 0 --ni 0 --cfi 3 --algorithm Stitch
 
 # train on multiple GPUs
