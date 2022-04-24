@@ -171,3 +171,5 @@ python vis_utils/launch.py  --operation delete
 2. [WZMIAOMIAO's deep-learning-for-image-processing repo](https://github.com/WZMIAOMIAO/deep-learning-for-image-processing/commits?author=WZMIAOMIAO)
 
 3. [WZMIAOMIAO's bilibili channel for deep learning](https://space.bilibili.com/18161609/channel/index)
+
+4. Accelerate your machine learning experimentation **with [FiftyOne](https://voxel51.com/)**
