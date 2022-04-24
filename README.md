@@ -124,11 +124,11 @@ In the following commands:
 
 `--ni` indicate which network to use: 0 for Faster R-CNN, 1 for RetinaNet. 
 
-`--cfi` indicate the class dict
+`--cfi` indicate the class dict.
 
-`--sdi` indicate the source domains in training
+`--sdi` indicate the source domains in training.
 
-`--tdi` indicate the target domains in training
+`--tdi` indicate the target domains in training.
 
 ```bash
 cd /path/to/workspace
