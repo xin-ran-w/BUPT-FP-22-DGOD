@@ -103,8 +103,6 @@ self.net_info = {
 }
 ```
 
-
-
 ### 5. Train
 
 Use `train.py` to train on a single GPU, or `train_multi_GPU.py` to train on multiple GPUs. 
@@ -133,24 +131,29 @@ conda activate env
 
 # train on a single GPU
 
-CUDA_VISIBLE_DEVICES=0 python train.py --num-classes 1 --amp True --batch-size 4 --sdi 1 2 3 4 --tdi 0 --ni 0 --cfi 3 --algorithm CGMDRL
+CUDA_VISIBLE_DEVICES=0 python train.py --num-classes 1 --amp True --batch-size 4 --sdi 1 2 3 4 --tdi 0 --ni 0 --cfi 3 --algorithm Stitch
 
 # train on multiple GPUs
-CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch --nproc_per_node=2 --use_env train_multi_GPU.py --num-classes 1 --amp True --batch-size 4 --sdi 1 2 3 4 --tdi 0 --ni 0 --cfi 3 --algorithm CGMDRL
+CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch --nproc_per_node=2 --use_env train_multi_GPU.py --num-classes 1 --amp True --batch-size 4 --sdi 1 2 3 4 --tdi 0 --ni 0 --cfi 3 --algorithm Stitch
 ```
 
 ### 6. Test
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python validation.py --cfi 2 --ni 0 --sdi 0 2 --tdi 1 --num-classes 8 --model-path /path/to/weight --algorithm CGMDRL
+CUDA_VISIBLE_DEVICES=0 python validation.py --cfi 2 --ni 0 --sdi 0 2 --tdi 1 --num-classes 8 --model-path /path/to/weight --algorithm Stitch
 ```
 
 ### 7. Infer & Visualization
 
 I use **fiftyone** in this part.
 
-```
-
+```bash
+python infer.py --cfi 1 --ni 1 --dataset bdd100k --num-classes 1 --model-path /path/to/weight --algorithm Stitch
 ```
 
 ### 8. Acknowledgement
+
+1. [Pytorch torchvision models](https://github.com/pytorch/vision/tree/master/torchvision/models/detection)
+2. [WZMIAOMIAO's deep-learning-for-image-processing repo](https://github.com/WZMIAOMIAO/deep-learning-for-image-processing/commits?author=WZMIAOMIAO)
+
+3. [WZMIAOMIAO's bilibili channel for deep learning](https://space.bilibili.com/18161609/channel/index)
