@@ -152,7 +152,17 @@ CUDA_VISIBLE_DEVICES=0 python validation.py --cfi 2 --ni 0 --sdi 0 2 --tdi 1 --n
 I use **fiftyone** in this part.
 
 ```bash
+# first create a dataset
+python vis_utils/launch.py --dataset bdd100k --num-classes 1 --operation create
+
+# second infer on this dataset
 python infer.py --cfi 1 --ni 1 --dataset bdd100k --num-classes 1 --model-path /path/to/weight --algorithm Stitch
+
+# finally launch fiftyone 
+python vis_utils/launch.py
+
+# if you want to delete the dataset 
+python vis_utils/launch.py  --operation delete
 ```
 
 ### 8. Acknowledgement
