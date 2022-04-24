@@ -25,19 +25,13 @@ class BasicParams(object):
                 "/data/wangxinran/dataset/object_detection/foggycity",          # domain 2
                 "/data/wangxinran/dataset/object_detection/kitti",              # domain 3
                 "/data/wangxinran/dataset/object_detection/sim10k",             # domain 4
-                "/data/wangxinran/dataset/object_detection/comic",              # domain 5
-                "/data/wangxinran/dataset/object_detection/watercolor",         # domain 6
-                "/data/wangxinran/dataset/object_detection/VOC2012",            # domain 7
-                "/data/wangxinran/dataset/object_detection/clipart",            # domain 8
             ],
 
             "class_dict": [
                 './class_dict/bcf.json',                                        # class_dict 0
                 './class_dict/bcfks.json',                                      # class_dict 1
-                './class_dict/wv2c.json',                                       # class_dict 2
-                './class_dict/bcf_b.json',                                      # class_dict 3 with background
-                './class_dict/bcfks_b.json',                                    # class_dict 4 with background
-                './class_dict/wv2c_b.json'                                      # class_dict 5 with background
+                './class_dict/bcf_b.json',                                      # class_dict 2 with background
+                './class_dict/bcfks_b.json',                                    # class_dict 3 with background
             ],
         }
 

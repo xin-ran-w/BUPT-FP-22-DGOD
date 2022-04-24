@@ -72,6 +72,39 @@ common categories: **car**
 
 The basic, train, valid parameters all listed in the params package.
 
+```python
+self.domain_info = {
+    "data_dir": [
+        "path/to/bdd100k",            # domain 0
+        "path/to/cityscapes",         # domain 1
+        "path/to/foggycity",          # domain 2
+        "path/to/kitti",              # domain 3
+        "path/to/sim10k",             # domain 4
+    ],
+
+    "class_dict": [
+        './class_dict/bcf.json',                                        # class_dict 0
+        './class_dict/bcfks.json',                                      # class_dict 1
+        './class_dict/bcf_b.json',                                      # class_dict 2 with background
+        './class_dict/bcfks_b.json',                                    # class_dict 3 with background
+    ],
+}
+
+self.net_info = {
+    "networks": [
+        'fasterrcnn',
+        'retinanet',
+    ],
+
+    "weights": [
+        '/data/wangxinran/weight/fasterrcnn_resnet50_fpn_coco.pth',
+        '/data/wangxinran/weight/retinanet_resnet50_fpn_coco.pth',
+    ]
+}
+```
+
+
+
 ### 5. Train
 
 Use `train.py` to train on a single GPU, or `train_multi_GPU.py` to train on multiple GPUs. 
@@ -100,11 +133,24 @@ conda activate env
 
 # train on a single GPU
 
-CUDA_VISIBLE_DEVICES=0 python train.py --num-classes 1 --amp True --batch-size 4 --sdi 1 2  --tdi 0 --ni 0 --cfi 4 --algorithm CGMDRL
+CUDA_VISIBLE_DEVICES=0 python train.py --num-classes 1 --amp True --batch-size 4 --sdi 1 2 3 4 --tdi 0 --ni 0 --cfi 3 --algorithm CGMDRL
 
 # train on multiple GPUs
-CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch --nproc_per_node=2 --use_env train_multi_GPU.py --num-classes 1 --amp True --batch-size 4 --sdi 1 2 3 4 --tdi 0 --ni 0 --cfi 4 --algorithm CGMDRL
+CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch --nproc_per_node=2 --use_env train_multi_GPU.py --num-classes 1 --amp True --batch-size 4 --sdi 1 2 3 4 --tdi 0 --ni 0 --cfi 3 --algorithm CGMDRL
 ```
 
 ### 6. Test
 
+```bash
+CUDA_VISIBLE_DEVICES=0 python validation.py --cfi 2 --ni 0 --sdi 0 2 --tdi 1 --num-classes 8 --model-path /path/to/weight --algorithm CGMDRL
+```
+
+### 7. Infer & Visualization
+
+I use **fiftyone** in this part.
+
+```
+
+```
+
+### 8. Acknowledgement
